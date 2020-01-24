@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<configuration 
+  xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <location path="%XDT_SITENAME%" xdt:Transform="InsertIfMissing" xdt:Locator="Match(path)">
+    <system.webServer xdt:Transform="InsertIfMissing">
+      <rewrite xdt:Transform="InsertIfMissing">
+        <allowedServerVariables xdt:Transform="InsertIfMissing">
+          <add name="HTTP_X_ORIGINAL_HOST" xdt:Transform="InsertIfMissing" />
+          <add name="HTTP_HOST" xdt:Transform="InsertIfMissing" />
+        </allowedServerVariables>        
+      </rewrite>
+	  <globalModules xdt:Transform="InsertIfMissing">
+        <add name="HostRewriteModule" image="D:\home\SiteExtensions\HostRewriteModule\HostRewriteModule.dll" preCondition="bitness64" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+    </globalModules>
+    </system.webServer>
+  </location>
+</configuration>

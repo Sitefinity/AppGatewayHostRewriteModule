@@ -1,0 +1,47 @@
+# .NET Desktop
+# Build and run tests for .NET Desktop or Windows classic desktop solutions.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+
+trigger:
+- master
+
+variables:
+  vmImageName: 'windows-latest'
+  solution: '**/HostRewriteModule.sln'
+  buildConfiguration: 'Release'
+
+stages:
+- stage: Build
+  displayName: Build stage
+
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+
+    steps:
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        platform: 'x64'
+        configuration: '$(buildConfiguration)'
+        msbuildArchitecture: 'x64'
+        createLogFile: true
+
+    - task: NuGetCommand@2
+      inputs:
+        command: 'pack'
+        packagesToPack: '**/HostRewriteModule.nuspec'
+        versioningScheme: 'byPrereleaseNumber'
+        majorVersion: '1'
+        minorVersion: '0'
+        patchVersion: '0'
+
+    - task: NuGetCommand@2
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: '617e3fca-8f93-498b-9f2f-8912dcddbe8b/6338e58f-2276-4ea4-bd2d-ee59e995173e'

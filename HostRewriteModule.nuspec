@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<package>
+  <metadata>
+    <id>AppGatewayHostRewriteModule</id>
+    <title>Application Gateway Host Rewrite Module</title>
+    <version>1.0.0</version>
+    <authors>Progress Software Corporation</authors>
+    <licenseUrl>https://github.com/Sitefinity/AppGatewayHostRewriteModule/blob/master/NOTICE.txt</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Replaces the Host header with the X-Original-Host on IIS of App Service via native module</description>
+    <tags>AzureSiteExtension x-original-host host header rewrite azure application-gateway app-gateway reverse-proxy</tags>
+    <packageTypes>
+      <packageType name="AzureSiteExtension" />
+    </packageTypes>
+  </metadata>
+  <files>
+	  <file src="bin\HostRewriteModule.dll" target="Content" />
+    <file src="applicationHost.xdt" target="Content" />
+  </files>
+</package>
