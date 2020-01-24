@@ -15,7 +15,6 @@
     </packageTypes>
   </metadata>
   <files>
-	  <file src="bin\HostRewriteModule.dll" target="Content" />
-    <file src="applicationHost.xdt" target="Content" />
+    <file src="bin\HostRewriteModule.dll" target="Content" />    
   </files>
 </package>
