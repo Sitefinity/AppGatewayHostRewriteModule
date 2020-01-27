@@ -2,7 +2,7 @@
 <configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
   <system.webServer xdt:Transform="InsertIfMissing">      
 	  <globalModules xdt:Transform="InsertIfMissing">
-        <add name="HostRewriteModule" image="D:\home\SiteExtensions\HostRewriteModule\HostRewriteModule.dll" preCondition="bitness64" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+        <add name="HostRewriteModule" image="D:\home\SiteExtensions\AppGatewayHostRewriteModule\HostRewriteModule.dll" preCondition="bitness64" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
     </globalModules>
   </system.webServer>
 </configuration>
