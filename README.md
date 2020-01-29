@@ -1,4 +1,4 @@
-# AppGatewayHostRewriteModule 1.0.0 (App Service extension)
+# AppGatewayHostRewriteModule 1.0.1 (App Service extension)
 
 # Installation
 Install this extension using your App Service's SCM site.
