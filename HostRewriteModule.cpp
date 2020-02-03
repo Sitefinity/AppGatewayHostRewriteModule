@@ -8,7 +8,7 @@ class HostRewriteModule : public CGlobalModule
 {
 public:
 
-    // Process a GL_APPLICATION_START notification.
+    // Process a GL_PRE_BEGIN_REQUEST notification.
     GLOBAL_NOTIFICATION_STATUS
         OnGlobalPreBeginRequest(
             IN IPreBeginRequestProvider* pProvider
@@ -19,13 +19,13 @@ public:
         // Create an HRESULT to receive return values from methods.
         HRESULT hr;
 
-        // Specify the "User-Agent" header name.
+        // Specify the "Host" header name.
         char szHostHeaderName[] = "Host";
 
-        // Create buffers to store the returned header values.
+        // Create buffers to store the returned header value.
         PCSTR pszXOriginalHost;
 
-        // Create buffers to store lengths of the returned header values.
+        // Create buffers to store lengths of the returned header value.
         USHORT cchXOriginalHostLength;
 
         IHttpContext* pHttpContext = pProvider->GetHttpContext();
@@ -33,18 +33,19 @@ public:
 
         if (pHttpRequest != NULL)
         {
-            // Look for the "User-Agent" header.
+            // Look for the "X-Original-Host" header.
             pszXOriginalHost = pHttpRequest->GetHeader("X-Original-Host", &cchXOriginalHostLength);
 
             // The header length will be 0 if the header was not found.
             if (cchXOriginalHostLength != 0)
             {
-                // Allocate space to store the header.
+                // Allocate space to store the "X-Original-Host" header.
                 pszXOriginalHost = (PCSTR)pHttpContext->AllocateRequestMemory(cchXOriginalHostLength + 1);
 
                 // Test for an error.
                 if (pszXOriginalHost != NULL)
                 {
+                    // Save the value of the "X-Original-Host" header.
                     pszXOriginalHost = pHttpRequest->GetHeader("X-Original-Host", &cchXOriginalHostLength);
 
                     // Test for an error.
@@ -53,6 +54,7 @@ public:
                         // Replace the "Host" header.
                         hr = pHttpRequest->SetHeader(szHostHeaderName, pszXOriginalHost, (USHORT)strlen(pszXOriginalHost), true);
 
+                        // Convert "X-Original-Host" header value from PCSTR to PCWSTR
                         size_t i;
                         mbstowcs_s(&i, nullptr, 0, pszXOriginalHost, _TRUNCATE);
 
