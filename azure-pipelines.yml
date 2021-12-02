@@ -1,6 +1,13 @@
 # Pipeline for producing Azure Site Extension: AppGatewayHostRewriteModule
 # https://www.nuget.org/packages/AppGatewayHostRewriteModule
 
+resources:
+  repositories:
+  - repository: sitefinity-ci
+    type: git
+    name: sitefinity-ci
+    ref: master
+
 trigger: none
 
 variables:
@@ -9,7 +16,7 @@ variables:
   buildConfiguration: 'Release'
   major: 1
   minor: 0
-  patch: 2
+  patch: 3
   NugetVersion: $(major).$(minor).$(patch)
 
 stages:
@@ -23,6 +30,7 @@ stages:
       vmImage: $(vmImageName)
 
     steps:
+    - checkout: self
     - task: VSBuild@1
       displayName: Build solution
       inputs:
@@ -37,12 +45,39 @@ stages:
       inputs:
         command: 'pack'
         packagesToPack: '**/HostRewriteModule.nuspec'
-        packDestination: '$(Build.ArtifactStagingDirectory)/packages'
+        packDestination: '$(Build.ArtifactStagingDirectory)/unsignedPackages'
         versioningScheme: 'byEnvVar'
         versionEnvVar: 'NugetVersion'
 
-    - publish: $(Build.ArtifactStagingDirectory)/packages
-      artifact: packages
+    - publish: $(Build.ArtifactStagingDirectory)/unsignedPackages
+      artifact: unsignedPackages
+
+  - job: SignNugetPackage
+    displayName: Sign Nuget Package
+    dependsOn: Build
+    pool:
+      name: Sitefinity Core
+      demands: distribution-builds
+          
+    steps:
+    - checkout: sitefinity-ci
+
+    - download: current
+      artifact: 'unsignedPackages'
+
+    - task: PowerShell@2
+      displayName: SignNugetPackage
+      inputs:
+        targetType: inline
+        script: | 
+          . "$(Build.SourcesDirectory)\Distribution\CommonScripts\Config.ps1"
+      
+          $env:configJson = ConvertTo-Json $mainBuildConfig -Depth 5 -Compress
+          Import-Module -Name $(Build.SourcesDirectory)\Distribution\DistributionBuildModules\NuGetPackages.psm1 -DisableNameChecking -ArgumentList $env:configJson
+          SignNugetPackages -directory $(Pipeline.Workspace)\unsignedPackages
+
+    - publish: $(Pipeline.Workspace)/unsignedPackages
+      artifact: signedPackages
 
 - stage: Deploy
   displayName: Deploy stage
@@ -62,12 +97,12 @@ stages:
 
           steps:
           - download: current
-            artifact: 'packages'
+            artifact: 'signedPackages'
 
           - task: NuGetCommand@2
             displayName: Push nuget package
             inputs:
               command: 'push'
-              packagesToPush: '$(Pipeline.Workspace)/packages/*.nupkg;'
+              packagesToPush: '$(Pipeline.Workspace)/signedPackages/*.nupkg;'
               nuGetFeedType: 'external'
               publishFeedCredentials: 'www.nuget.org/api/v2/'
