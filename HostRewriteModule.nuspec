@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <package>
   <metadata>
-    <id>Progress.AppGatewayHostRewriteModule</id>
+    <id>Progress.Sitefinity.Cloud.AppGatewayHostRewriteModule</id>
     <title>Application Gateway Host Rewrite Module</title>
     <version>1.0.3</version>
     <authors>Progress Software Corporation</authors>
