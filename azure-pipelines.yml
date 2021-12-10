@@ -1,5 +1,5 @@
 # Pipeline for producing Azure Site Extension: AppGatewayHostRewriteModule
-# https://www.nuget.org/packages/AppGatewayHostRewriteModule
+# https://www.nuget.org/packages/Progress.Sitefinity.Cloud.AppGatewayHostRewriteModule
 
 resources:
   repositories:
@@ -16,7 +16,7 @@ variables:
   buildConfiguration: 'Release'
   major: 1
   minor: 0
-  patch: 3
+  patch: 4
   NugetVersion: $(major).$(minor).$(patch)
 
 stages:

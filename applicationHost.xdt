@@ -8,7 +8,7 @@
       </allowedServerVariables>
     </rewrite>
     <globalModules xdt:Transform="InsertIfMissing">
-      <add name="HostRewriteModule" image="D:\home\SiteExtensions\AppGatewayHostRewriteModule\HostRewriteModule.dll" preCondition="bitness64" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+      <add name="HostRewriteModule" image="D:\home\SiteExtensions\Progress.Sitefinity.Cloud.AppGatewayHostRewriteModule\HostRewriteModule.dll" preCondition="bitness64" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
     </globalModules>
   </system.webServer>
 </configuration>
