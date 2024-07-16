@@ -16,4 +16,4 @@ However, this approach has a pitfall. If there are other rewrite rules executed 
 Using the native IIS module ensures that the HOST header has taken the value of the X-Original-Host header before the rewrite module steps in.
 
 # Prerequisites
-Visual C++ Redistributable, required - 	https://aka.ms/vs/17/release/vc_redist.x84.exe
+Visual C++ Redistributable, required - 	https://aka.ms/vs/17/release/vc_redist.x64.exe
